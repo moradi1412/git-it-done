@@ -20,6 +20,20 @@
 
 
   <main class="flex-row justify-space-between">
+    <!-- Creating two columns -->
+    <div class="col-12 col-md-4"></div>
+    <div class="card">
+      <h3 class="card-header text-upppercase">Search by User</h3>
+      <form id="user-form" class="card-body">
+      <label class="form-label" for="username">UserName</label>
+      <input type="text" name="username" id="username" autofocus="true" class="form-input">
+      <button tyoe="submit" class="btn">Get User</button>
+      </form>
+      </div>
+    <div class="col-12 col-md-8">
+    <h2 class="subtitle"> Showing repositories for: <span id="repo-search-term"></span> </h2>
+    <div id="repos-container" class="list-group"</div>
+    </div>
 
   </main>
 
