@@ -3,6 +3,38 @@ var userFormEl = document.querySelector("#user-form");
 var nameInputEl = document.querySelector("#username");
 var repoContainerEl = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
+var languageButtonsEl = document.querySelector("#language-buttons");
+
+
+var formSubmitHandler = function (event) {
+    event.preventDefault();
+    var username = nameInputEl.value.trim();
+
+    if (username) {
+        //replace the recived data to the function 
+        getUserRepos(username);
+        repoContainerEl.textContent = "";
+        nameInputEl.value = "";
+    }
+    else {
+        alert("please enter a github username")
+    }
+    console.log(event);
+};
+
+var buttonClickHandler = function(event) {
+    // get the language attribute from the clicked element
+    var language = event.target.getAttribute("data-language");
+  
+    if (language) {
+      getFeaturedRepos(language);
+  
+      // clear old content
+      repoContainerEl.textContent = "";
+    }
+  };
+
+
 
 var getUserRepos = function (user) {
 
@@ -24,6 +56,22 @@ var getUserRepos = function (user) {
             alert("Unable to connect to GitHub");
         });
 };
+
+
+var getFeaturedRepos = function(language) {
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+  
+    fetch(apiUrl).then(function(response) {
+      if (response.ok) {
+        response.json().then(function(data) {
+          displayRepos(data.items, language)
+        });
+      } else {
+        alert('Error: GitHub User Not Found');
+      }
+    });
+  };
+
 
 var displayRepos = function (repos, searchTerm) {
     if (repos.length === 0) {
@@ -55,7 +103,7 @@ var displayRepos = function (repos, searchTerm) {
             statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
         };
         //append to container or display
-
+    
         
         repoEl.appendChild(statusEl);
         repoContainerEl.appendChild(repoEl);
@@ -65,21 +113,9 @@ var displayRepos = function (repos, searchTerm) {
 };
 
 
-var formSubmitHandler = function (event) {
-    event.preventDefault();
-    var username = nameInputEl.value.trim();
 
-    if (username) {
-        //replace the recived data to the function 
-        getUserRepos(username);
-        nameInputEl.value = "";
-    }
-    else {
-        alert("please enter a github username")
-    }
-    console.log(event);
-};
+
 
 userFormEl.addEventListener("submit", formSubmitHandler);
-
+languageButtonsEl.addEventListener("click", buttonClickHandler);
 

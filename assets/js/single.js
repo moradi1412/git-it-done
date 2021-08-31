@@ -34,6 +34,7 @@ var getRepoIssues = function (repo) {
           document.location.replace("./index.html");
         }
       });
+    };
 
 var displayIssues = function (issues) {
     if (issues.length === 0) {
